@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const argon2 = require('argon2');
+const crypto = require('crypto')
 const { error } = require('console');
 
 const app = express();
@@ -18,18 +18,22 @@ app.post('/createAccount', async (req, res) => {
   const { user, password } = req.body;
   console.log('Creating account for user: ' + user);
   let hash;
+  const start = Date.now();
+  while (Date.now() - start < 750) {
+  }
+
 
   try {
       if (!password) {
           throw new Error('Password is undefined');
       }
-      hash = await argon2.hash(password, {salt,hashLength:256,type: argon2.argon2id,timeCost:30});
+      hash = await crypto.pbkdf2Sync(password,salt,5,64,'sha256').toString('hex')
   } catch (err) {
       console.error(err);
       res.status(500).send('Error creating account');
       return;
   } finally {
-      console.log('Hash created: ' + hash.split('p=')[1]);
+      console.log('Hash created: ' + hash);
   }
   
   res.status(200).send('Account Created');
