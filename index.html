@@ -1,19 +1,27 @@
-<link rel="stylesheet" href="style.css">
-<script src="logic.js"></script>
-<div class="container">
-    <h2>Login to your account</h2>
-    <form>
-        <input type="text" placeholder="Username"/>
-        <input type="password" placeholder="Password"/>
-        <button>Login</button>
-    </form>
-</div>
-<div class="form">
-    <h2>Create an account</h2>
-    <form>
-        <input type="text" placeholder="Username"/>
-        <input type="password" placeholder="Password"/>
-        <button>Register</button>
-    </form>
-</div>
-</div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="script.js"></script>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="login-container">
+            <h1>Login</h1>
+            <form>
+                <input id="user" type="text" placeholder="Username">
+                <input id="password" type="password" placeholder="Password">
+                <button onclick="login()" type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+</html>
+
