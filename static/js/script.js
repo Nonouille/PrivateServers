@@ -3,7 +3,7 @@ function login() {
     const password = document.getElementById('password');
 
     const loginCall = async () => {
-        const response = await fetch('http://localhost:3000/createAccount', {
+        const response = await fetch('http://localhost:3000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
