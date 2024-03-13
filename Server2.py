@@ -35,8 +35,7 @@ def encrypt():
     hash_bytes = hash_value.encode('utf-8')
     user_bytes = user_value.encode('utf-8')
         
-    cypher = primitive.encrypt(hash_bytes,user_bytes)
-    cypher = cypher.hex()
+    cypher = primitive.encrypt(hash_bytes,user_bytes).hex()
     
     response = {
       'message' : 'Cypher created successfully',
@@ -66,8 +65,8 @@ def decrypt():
     cypher_bytes = bytes.fromhex(cypher_value)
     user_bytes = user_value.encode('utf-8')
     
-    hash = primitive.decrypt(cypher_bytes,user_bytes)
-    hash = hash.hex()
+    hash = str(primitive.decrypt(cypher_bytes,user_bytes))
+    hash = hash.split('\'')[1]
     
     response = {
       'message' : 'Cypher created successfully',
