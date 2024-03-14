@@ -1,0 +1,23 @@
+version: '3'
+services:
+  server1:
+    build:
+      dockerfile: Dockerfile.Server1
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    container_name: Server1
+
+  server2:
+    build:
+      dockerfile: Dockerfile.Server2
+    expose:
+      - 3001
+    networks:
+      - InsideCompany
+    container_name: Server2
+
+networks:
+  InsideCompany:
+    driver: bridge
