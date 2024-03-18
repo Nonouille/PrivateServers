@@ -27,6 +27,7 @@ WORKDIR /usr/src/app
 RUN pip install --upgrade pip
 RUN pip install tink
 RUN pip install flask
+RUN pip install flask_cors
 
 # Copy the current directory contents into the container
 COPY Server2.py .

@@ -1,10 +1,12 @@
 from flask import Flask,request,jsonify
+from flask_cors import CORS
 import tink
 from tink import aead
 from tink import secret_key_access
 import json
 
 app = Flask(__name__)
+CORS(app)
 port = 3001
 
 aead.register()
@@ -79,4 +81,4 @@ def decrypt():
     return str(e), 500
 
 if __name__ == '__main__':
-  app.run(port=port,host='0.0.0.0')
+  app.run(host='0.0.0.0', port=port)

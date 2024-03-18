@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     expose:
       - 3000
+    networks:
+      - InsideCompany
     container_name: Server1
 
   server2:
@@ -20,4 +22,3 @@ services:
 
 networks:
   InsideCompany:
-    driver: bridge
