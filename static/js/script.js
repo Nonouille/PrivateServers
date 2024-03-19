@@ -16,6 +16,12 @@ function login() {
       });
       const data = await response.json();
       console.log(data);
+
+      if (response.ok) {
+        alert(data.message);
+      } else {
+        alert("Error: " + data.message);
+      }
     }
     loginCall();
   }
@@ -38,6 +44,12 @@ function login() {
       });
       const data = await response.json();
       console.log(data);
+
+      if (response.ok) {
+        alert(data.message);
+      } else {
+        alert("Error: " + data.message);
+      }
     }
     registerCall();
   }
