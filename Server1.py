@@ -7,7 +7,7 @@ import json
 port = 3000
 app = Flask(__name__)
 CORS(app)
-salt = b'NoSaltPleaseToday'
+salt = b'NoSaltPleaseToday'#change here for random salt
 filePath = 'data/db.json'
 database = []
 hasher = PasswordHasher(time_cost=30,hash_len=128)
@@ -50,9 +50,9 @@ def login():
       'user': user,
       'cypher': cypher
     }
-    response = requests.post('http://Server2:3001/decrypt', json=body)
+    response = requests.post('http://Server2:3001/decrypt', json=body)#retiece cipher form db and decrypt it then 
     hashToVerify = response.json().get('hash')
-    if hash != hashToVerify:
+    if hash != hashToVerify:  #change this for random salt
       return jsonify({'message' :'Incorrect password' }), 500
     else:
       return jsonify({'message' : 'Logged in'}), 200

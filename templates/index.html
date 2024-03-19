@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" hhref="{{ url_for('static', filename='css/styles.css') }}">
-        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="login-container">
-            <h1>Login</h1>
-            <form>
-                <input id="user" type="text" placeholder="Username">
-                <input id="password" type="password" placeholder="Password">
-                <button onclick="login()" type="button">Login</button>
-                <button onclick="register()" type="button">Register</button>
-            </form>
-        </div>
-    </body>
-</html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div id="login-form">
+    <h2>Login</h2>
+    <form id="login" onsubmit="login(); return false;">
+      <input type="username" name="username" placeholder="Username"> <br><br>
+      <input type="password" name="password" placeholder="Password"> <br><br>
+      <input type="submit" value="Login">
+    </form>
+    <button onclick="toggleForm()">No account? Signup</button>
+  </div>
 
+  <div id="signup-form" style="display: none;">
+    <h2>Signup</h2>
+    <form id="signup" onsubmit="register(); return false;">
+      <input type="username" name="username" placeholder="Username"> <br><br>
+      <input type="password" name="password" placeholder="Password"> <br><br>
+      <input type="submit" value="Signup">
+    </form>
+    <button onclick="toggleForm()">Already have an account? Login</button>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

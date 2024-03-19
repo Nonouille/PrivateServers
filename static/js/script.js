@@ -1,41 +1,56 @@
 function login() {
-    const user = document.getElementById('user');
-    const password = document.getElementById('password');
-
+    const form = document.getElementById('login');
+    const user = form['username'].value;
+    const password = form['password'].value;
+  
     const loginCall = async () => {
-        const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: user.value,
-                password: password.value
-            })
-        });
-        const data = await response.json();
-        console.log(data);
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: user,
+          password: password
+        })
+      });
+      const data = await response.json();
+      console.log(data);
     }
     loginCall();
-}
-
-function register() {
-    const user = document.getElementById('user');
-    const password = document.getElementById('password');
-
+  }
+  
+  function register() {
+    const form = document.getElementById('signup');
+    const user = form['username'].value;
+    const password = form['password'].value;
+  
     const registerCall = async () => {
-        const response = await fetch('http://localhost:3000/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: user.value,
-                password: password.value
-            })
-        });
-        const data = await response.json();
-        console.log(data);
+      const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user: user,
+          password: password
+        })
+      });
+      const data = await response.json();
+      console.log(data);
     }
     registerCall();
-}
+  }
+  
+  function toggleForm() {
+    var loginForm = document.getElementById("login-form");
+    var signupForm = document.getElementById("signup-form");
+  
+    if (loginForm.style.display === "none") {
+      loginForm.style.display = "block";
+      signupForm.style.display = "none";
+    } else {
+      loginForm.style.display = "none";
+      signupForm.style.display = "block";
+    }
+  }
