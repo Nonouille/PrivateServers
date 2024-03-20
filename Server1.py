@@ -1,13 +1,14 @@
 from flask import Flask, request, render_template,jsonify
 from flask_cors import CORS
 from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError
 import requests
 import json
 
 port = 3000
 app = Flask(__name__)
 CORS(app)
-salt = b'NoSaltPleaseToday'#change here for random salt
+#Not needed for random salt : salt = b'NoSaltPleaseToday'
 filePath = 'data/db.json'
 database = []
 hasher = PasswordHasher(time_cost=30,hash_len=128)
@@ -40,24 +41,30 @@ def login():
     return jsonify({'message' : 'Cypher not found for user' }), 500
   
   #Then check if the password is correct
-  hash = None
   try:
     if not password:
       return jsonify({'message' : 'Password is undefined'}), 500
-    hash = hasher.hash(password,salt=salt)
-    hash = hash.split('p=')[1]
+    
+    #no need to hash the password, since .verify does it for us
+
     body = {
       'user': user,
       'cypher': cypher
     }
-    response = requests.post('http://Server2:3001/decrypt', json=body)#retiece cipher form db and decrypt it then 
+    response = requests.post('http://Server2:3001/decrypt', json=body)
     hashToVerify = response.json().get('hash')
-    if hash != hashToVerify:  #change this for random salt
-      return jsonify({'message' :'Incorrect password' }), 500
-    else:
-      return jsonify({'message' : 'Logged in'}), 200
+    
+    # Verify the password against the decrypted hash
+    hasher.verify(hashToVerify, password)
+        
+    # hasher.verify throws an exception if verification fails
+    return jsonify({'message': 'Logged in'}), 200
+  
+  except VerifyMismatchError:
+    return jsonify({'message': 'Incorrect password'}), 500
+    
   except Exception as e:
-    return jsonify({'message' :'Error logging in', 'Error' : str(e) }), 500
+        return jsonify({'message': 'Error logging in', 'Error': str(e)}), 500
   
   
 
@@ -78,8 +85,7 @@ def register():
     if not password:
       return jsonify({'message' : 'Password is undefined'}), 500
     #Hash the password
-    hash = hasher.hash(password,salt=salt)
-    hash = hash.split('p=')[1]
+    hash = hasher.hash(password) #remove salt parameter to use random salt of argon2
     body = {
       'user': user,
       'hash': hash
@@ -88,10 +94,11 @@ def register():
     response = requests.post('http://Server2:3001/encrypt', json=body)
     body = response.json()
     cypher = body['cypher']
-    string = user + ':' + cypher + '\n'
+    string = f'{user}:{cypher}\n'
     with open(filePath, 'a') as file:
       file.write(string)
-    return jsonify({'message' : 'Account Created'}), 200
+    return jsonify({'message' : 'Account Created', 'Using hash': hash}), 200
+ 
   except Exception as e:
     print(e)
     return jsonify({'message' :'Error creating account', 'Error' : str(e) }), 500
