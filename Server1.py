@@ -97,7 +97,7 @@ def register():
     string = f'{user}:{cypher}\n'
     with open(filePath, 'a') as file:
       file.write(string)
-    return jsonify({'message' : 'Account Created', 'Using hash': hash}), 200
+    return jsonify({'message' : 'Account Created'}), 200
  
   except Exception as e:
     print(e)
