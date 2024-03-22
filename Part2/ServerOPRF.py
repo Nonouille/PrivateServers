@@ -1,30 +1,18 @@
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives.asymmetric import dh
 from cryptography.hazmat.backends import default_backend
-from gmpy2 import mpz, c_div
 
 app = Flask(__name__)
 
+CORS(app)
 
 parameters = dh.generate_parameters(generator=2, key_size=2048, backend=default_backend())
-numbers = parameters.parameter_numbers()
-
-
 # Server's secret key (salt s)
 private_key = parameters.generate_private_key()
 salt = private_key.private_numbers().x
-
-print("number p ", numbers.p)
-print("numbers q", numbers.q)
-
-
-p = mpz(numbers.p)
-q = c_div(p - 1, 2)
-
-print("p" , p) 
-print("q", q)
 
 @app.route('/oprf', methods=['POST'])
 def serverOPRF():
