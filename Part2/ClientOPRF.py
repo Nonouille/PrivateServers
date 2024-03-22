@@ -3,11 +3,16 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 from OPRF_var import q
 from flask import Flask, request, jsonify
+import requests
 from flask_cors import CORS
+import csv
 
 app = Flask(__name__)
 
 CORS(app)
+
+r = None
+z = None
 
 # Function to hash an integer to an element of the cyclic group G
 def string_to_integer(P,q):
@@ -34,6 +39,28 @@ def initialize(P,q):
     r = generate_randome_scalar()
     C = pow(H_P, r)
     return C
+
+@app.route('/oprf', methods=['POST'])
+def clientOPRF():
+    try:
+        U = request.json.get('username')
+        P = request.json.get('password')
+        C = initialize(P, q)
+        
+        body = {
+            'U' : U,
+            'C': C
+        }
+        response = requests.post('http://localhost:5000/oprf', json=body)
+        R = response.json().get('R')
+        z = pow(z,-1)
+        K = pow(R, z)
+        with open('client.csv', mode='a') as file:
+            writer = csv.writer(file)
+            writer.writerow([U, P, K])
+        return jsonify({'Message' : 'OPRF worded'}), 200
+    except Exception as e:
+        return jsonify({'Message' : 'Error in OPRF', 'Error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
