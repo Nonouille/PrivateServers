@@ -11,7 +11,7 @@ To create the Docker containers, follow these steps:
     docker-compose up --build
     ```
 4. Once the containers are up and running, you can access the main page at `localhost:3000/`.
-5. You can register, login and then check your username is appearing next to the encryption of your password's hash in the file of the container `/usr/src/app/data/db.txt`
+5. You can register, login and then check your username is appearing next to the encryption of your password's hash in the file of the container `/usr/src/app/data/db.json`
 
 ## Part 2: OPRF
 
