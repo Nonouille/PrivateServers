@@ -40,8 +40,6 @@ def verify():
                 print(f"Verification successful for user {server_username}")
             else:
                 print(f"Verification failed for user {server_username}")
-
-if __name__ == "__main__":
-    verify()
-
+                
+verify()
 

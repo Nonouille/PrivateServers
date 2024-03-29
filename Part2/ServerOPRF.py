@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from OPRF_var import p
+from OPRF_var import q
 import os, csv
 app = Flask(__name__)
 
@@ -22,11 +22,11 @@ def serverOPRF():
                 writer = csv.writer(file)
                 writer.writerow([U, s])
         print("C : ", C)
-        R = pow(C, s,p)
+        R = pow(C, s,2*q + 1)
         return jsonify({'R': R}), 200
     except Exception as e:
         return jsonify({'Message' : 'Error in Server OPRF', 'Error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5002, debug=True)
 

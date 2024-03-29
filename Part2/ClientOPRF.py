@@ -34,7 +34,7 @@ def generate_random_scalar():
 def initialize(P,q):
     H_P = H(P)
     r = generate_random_scalar()
-    C = pow(H_P, r,p)
+    C = pow(H_P, r,2*q + 1)
     return C,r
 
 @app.route('/oprf', methods=['POST'])
@@ -42,25 +42,25 @@ def clientOPRF():
     try:
         U = request.json.get('username')
         P = request.json.get('password')
-        C,r = initialize(P, q)
+        C,r = initialize(P, 2*q + 1)
         print("C : ",C)
         body = {
             'U' : U,
             'C': C
         }
-        response = requests.post('http://localhost:5000/oprf', json=body)
+        response = requests.post('http://localhost:5002/oprf', json=body)
         R = response.json().get('R')
         print("R : ",R)
         print('Type of r : ',type(r))
         print("Type of p : ",type(p))
         try :
-            z = pow(r,-1,p)
+            z = pow(r,-1,2*q + 1)
             print("z : ",z)
         except Exception as e:
             return jsonify({'Message' : 'Error in computing z', 'Error': str(e)}), 500
         
         try:
-            K = pow(R, z,p)
+            K = pow(R, z,2*q + 1)
             print("K : ",K)
         except Exception as e:
             return jsonify({'Message' : 'Error in computing K', 'Error': str(e)}), 500
